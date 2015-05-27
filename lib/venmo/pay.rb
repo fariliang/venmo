@@ -1,29 +1,29 @@
 module Venmo
   module Pay
-    def pay_by_email(email, amount, note)
+    def pay_by_email(email, amount, note,recipient_access_token)
       # -d email= \
-      @send_hash= common(amount,note, { :email => email})
+      @send_hash= common(amount,note,recipient_access_token, { :email => email})
       core_pay
     end
 
-    def pay_by_user_id(user_id, amount, note)
+    def pay_by_user_id(user_id, amount, note, recipient_access_token)
       # -d user_id= \
-      @send_hash= common(amount,note, {:user_id => user_id})
+      @send_hash= common(amount,note,recipient_access_token, {:user_id => user_id})
       core_pay
     end
 
-    def pay_by_phone_number(phone_number, amount, note)
+    def pay_by_phone_number(phone_number, amount, note, recipient_access_token)
       # -d phone= \
-      @send_hash = common(amount,note, {:phone=> phone_number})
+      @send_hash = common(amount,note, recipient_access_token,{:phone=> phone_number})
       core_pay
     end
 
     protected
-    def common(new_amount, new_note, merge_in)
+    def common(new_amount, new_note, recipient_access_token, merge_in)
       {
        amount: new_amount,
        note: new_note,
-       access_token: Venmo.access_token,
+       access_token: recipient_access_token,
        audience: (Venmo.privacy || "private")
       }.merge(merge_in)
     end
